@@ -1,2 +1,3 @@
 # custom_memory_allocator
-An implementation of the memory allocator in C
+
+## implementation of the memory allocator in C, using the bitmask approach
