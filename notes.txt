@@ -1,0 +1,22 @@
+linear allocation is a problem, since freeing prev blocks could lead to the pointer shifting to that part 
+leading to the "deletion" of the other ahead parts of memory(deletion since the pointer is the once which keeps track of where the new mem alloation in the heap shld start from)
+
+what we can do is use a bitmap per where each bit maps to a block in the heap, where the block itself can be of some size, 
+
+so then when the user reqs for some bytes of data, req_bytes/num_of_bytes_per_block of blocks will be assigned to the user
+
+the algo must find the max number of contiguous free blocks, and if it does, return the address of the first 
+block to the user 
+
+and this is the issue of fragmentation 
+    1111111100011101010  (bit map correponding to the heap)
+
+say 6 blocks are needed and its indeed there here (6 0s) but they are not contigious and hence this does not work, and this leads to fragmentation which is an artifact of memory freeing action of the heap
+
+to get rid of it defragmentation is used, where the occupied elements are rearranged to form a contigous stream of 1s in the bitmap, leaving the 0s off to one side, this however is a bit costly in terms of time complexity
+
+there are hence two principles followed for allocation policies
+    1) first fit policy: scan until it finds any spot to fit the data
+    2) best fit policy: scan whole bitmap, return the smallest spot large enough to fit in the data
+    
+and freeing just means setting the bitmap of those blocks to be 0
